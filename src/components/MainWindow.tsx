@@ -187,33 +187,66 @@ const MainWindow: React.FC = () => {
             fullWidth
             onClick={handleVoiceSearch}
             sx={{
-              bgcolor: 'primary.main',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
-              py: 3,
-              borderRadius: 2,
+              py: 3.5,
+              borderRadius: 3,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               textTransform: 'none',
+              boxShadow: '0 8px 20px rgba(102, 126, 234, 0.3)',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               '&:hover': {
-                bgcolor: 'primary.dark'
+                transform: 'translateY(-2px)',
+                boxShadow: '0 12px 24px rgba(102, 126, 234, 0.4)',
+                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+              },
+              '&:active': {
+                transform: 'translateY(0px)',
+              },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+                transition: 'left 0.5s',
+              },
+              '&:hover::before': {
+                left: '100%',
               }
             }}
           >
             <Box sx={{
-              width: 64,
-              height: 64,
+              width: 72,
+              height: 72,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              bgcolor: 'rgba(255,255,255,0.2)',
+              bgcolor: 'rgba(255,255,255,0.15)',
               borderRadius: '50%',
-              mb: 1
+              mb: 1.5,
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              transition: 'all 0.3s ease',
+              position: 'relative',
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                inset: 0,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent 50%)',
+              }
             }}>
-              <i className="ri-mic-line" style={{ fontSize: '2rem' }} />
+              <i className="ri-mic-line" style={{ fontSize: '2.2rem', position: 'relative', zIndex: 1 }} />
             </Box>
-            <Typography variant="subtitle1" fontWeight={500}>
+            <Typography variant="subtitle1" fontWeight={600} sx={{ letterSpacing: '0.5px' }}>
               Tìm Kiếm
             </Typography>
           </Button>
@@ -223,44 +256,102 @@ const MainWindow: React.FC = () => {
             fullWidth
             onClick={handleFamiliarSongs}
             sx={{
-              borderColor: 'primary.main',
-              borderWidth: 2,
-              color: 'primary.main',
-              py: 3,
-              borderRadius: 2,
+              border: '2px solid transparent',
+              background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #ff9a56 0%, #ff6b9d 100%) border-box',
+              color: 'transparent',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              py: 3.5,
+              borderRadius: 3,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               textTransform: 'none',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              boxShadow: '0 4px 16px rgba(255, 154, 86, 0.2)',
               '&:hover': {
-                borderWidth: 2,
-                borderColor: 'primary.main',
-                bgcolor: 'primary.main',
+                transform: 'translateY(-2px)',
+                background: 'linear-gradient(135deg, #ff9a56 0%, #ff6b9d 100%)',
                 color: 'white',
+                boxShadow: '0 8px 20px rgba(255, 154, 86, 0.3)',
                 '& .icon-bg': {
-                  bgcolor: 'rgba(255,255,255,0.2)'
+                  bgcolor: 'rgba(255,255,255,0.15)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(10px)'
+                },
+                '& .button-text': {
+                  color: 'white',
+                  backgroundClip: 'unset',
+                  WebkitBackgroundClip: 'unset'
                 }
+              },
+              '&:active': {
+                transform: 'translateY(0px)',
+              },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+                transition: 'left 0.5s',
+              },
+              '&:hover::before': {
+                left: '100%',
               }
             }}
           >
             <Box 
               className="icon-bg"
               sx={{
-                width: 64,
-                height: 64,
+                width: 72,
+                height: 72,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                bgcolor: 'rgba(79,70,229,0.1)',
+                background: 'linear-gradient(135deg, rgba(255, 154, 86, 0.1) 0%, rgba(255, 107, 157, 0.1) 100%)',
+                border: '1px solid rgba(255, 154, 86, 0.2)',
                 borderRadius: '50%',
-                mb: 1,
-                transition: 'all 0.3s'
+                mb: 1.5,
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle at 30% 30%, rgba(255, 154, 86, 0.2), transparent 50%)',
+                }
               }}
             >
-              <i className="ri-music-2-line" style={{ fontSize: '2rem' }} />
+              <i className="ri-music-2-line" style={{ 
+                fontSize: '2.2rem', 
+                background: 'linear-gradient(135deg, #ff9a56 0%, #ff6b9d 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+                position: 'relative',
+                zIndex: 1
+              }} />
             </Box>
-            <Typography variant="subtitle1" fontWeight={500}>
+            <Typography 
+              className="button-text"
+              variant="subtitle1" 
+              fontWeight={600} 
+              sx={{ 
+                letterSpacing: '0.5px',
+                background: 'linear-gradient(135deg, #ff9a56 0%, #ff6b9d 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+                transition: 'all 0.3s ease'
+              }}
+            >
               Quen Thuộc
             </Typography>
           </Button>
