@@ -8,12 +8,9 @@ import {
   Avatar,
   Chip,
   IconButton,
+  Button,
+  Fab,
 } from '@mui/material';
-import {
-  MicRounded,
-  MusicNoteRounded,
-  PersonRounded,
-} from '@mui/icons-material';
 import { apiService, Song } from '../services/api';
 import GuitarLoader from './GuitarLoader';
 
@@ -37,11 +34,41 @@ const MainWindow: React.FC = () => {
         setRecentSongs([
           { 
             id: 1, 
-            title: 'Mưa Phi Trường', 
-            artist: { id: 1, name: 'Hoàng Dũng' }, 
+            title: 'Nơi Này Có Anh', 
+            artist: { id: 1, name: 'Sơn Tùng M-TP' }, 
             lyrics: '',
             tempo: 80,
             difficulty: 'BEGINNER',
+            playCount: 0,
+            chords: []
+          },
+          { 
+            id: 2, 
+            title: 'Chạy Ngay Đi', 
+            artist: { id: 1, name: 'Sơn Tùng M-TP' }, 
+            lyrics: '',
+            tempo: 90,
+            difficulty: 'INTERMEDIATE',
+            playCount: 0,
+            chords: []
+          },
+          { 
+            id: 3, 
+            title: 'Có Chắc Yêu Là Đây', 
+            artist: { id: 1, name: 'Sơn Tùng M-TP' }, 
+            lyrics: '',
+            tempo: 85,
+            difficulty: 'BEGINNER',
+            playCount: 0,
+            chords: []
+          },
+          { 
+            id: 4, 
+            title: 'Hãy Trao Cho Anh', 
+            artist: { id: 1, name: 'Sơn Tùng M-TP' }, 
+            lyrics: '',
+            tempo: 95,
+            difficulty: 'INTERMEDIATE',
             playCount: 0,
             chords: []
           }
@@ -76,270 +103,337 @@ const MainWindow: React.FC = () => {
   };
 
   const chordProgressions = [
-    { name: 'Canon', chords: 'C G Am Em F C F G', icon: MusicNoteRounded },
-    { name: 'Pop Ballad', chords: 'G Em C D', icon: MusicNoteRounded },
-    { name: 'Blues', chords: 'A D E A', icon: MusicNoteRounded },
-    { name: 'Bolero', chords: 'Am Dm', icon: MusicNoteRounded },
+    { name: 'Canon', chords: 'C G Am Em F C F G' },
+    { name: 'Pop Ballad', chords: 'G Em C D' },
+    { name: 'Blues', chords: 'A D E A' },
+    { name: 'Bolero', chords: 'Am Dm G C' },
   ];
 
   return (
-    <Box sx={{ 
-      minHeight: '100vh', 
-      backgroundColor: '#f8f9fa',
-      px: 2,
-      py: 2
-    }}>
-      {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Typography 
-          variant="h4" 
-          sx={{ 
-            color: '#5865f2',
-            fontWeight: 'bold',
-            fontStyle: 'italic'
-          }}
-        >
-          logo
-        </Typography>
-        
-        <Box display="flex" alignItems="center" gap={1}>
-          <Chip
-            icon={<PersonRounded />}
-            label="Trial: 3"
-            sx={{
-              backgroundColor: '#5865f2',
-              color: 'white',
-              fontWeight: 'bold'
+    <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', position: 'relative' }}>
+      {/* Nav Bar */}
+      <Box sx={{ 
+        position: 'fixed',
+        top: 0,
+        width: '100%',
+        bgcolor: 'white',
+        borderBottom: '1px solid',
+        borderColor: 'grey.100',
+        zIndex: 10
+      }}>
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          px: 2,
+          py: 1.5
+        }}>
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              fontFamily: 'Pacifico, cursive',
+              color: 'primary.main',
+              fontSize: '1.5rem'
             }}
-          />
-          <Avatar 
-            sx={{ width: 40, height: 40 }}
-            src="/api/placeholder/40/40"
-          />
+          >
+            logo
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Chip
+              size="small"
+              label="Trial: 3"
+              icon={<i className="ri-vip-crown-fill" style={{ fontSize: '1rem' }} />}
+              sx={{
+                bgcolor: 'primary.main',
+                color: 'white',
+                fontSize: '0.75rem',
+                px: 1,
+                '& .MuiChip-icon': {
+                  color: 'white',
+                  ml: 0.5
+                }
+              }}
+            />
+            <Avatar 
+              sx={{ 
+                width: 32, 
+                height: 32,
+                bgcolor: 'grey.100'
+              }}
+            >
+              <img 
+                src="https://readdy.ai/api/search-image?query=young%20vietnamese%20man%20with%20glasses%2C%20minimalist%20portrait%2C%20professional%20headshot%2C%20neutral%20expression%2C%20isolated%20on%20light%20background&width=80&height=80&seq=1&orientation=squarish" 
+                alt="Avatar" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </Avatar>
+          </Box>
         </Box>
       </Box>
 
-      {/* Main Action Cards */}
-      <Box display="flex" gap={2} mb={4}>
-        <Box flex={1}>
-          <Card 
+      {/* Main Content */}
+      <Box sx={{ pt: '4rem', px: 2, pb: 10 }}>
+        {/* Action Buttons */}
+        <Box sx={{ 
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mt: 6,
+          px: 2,
+          gap: 2
+        }}>
+          <Button
+            variant="contained"
+            fullWidth
             onClick={handleVoiceSearch}
             sx={{
-              background: 'linear-gradient(135deg, #5865f2 0%, #7289da 100%)',
+              bgcolor: 'primary.main',
               color: 'white',
-              cursor: 'pointer',
-              borderRadius: 3,
-              minHeight: 140,
+              py: 3,
+              borderRadius: 2,
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
               alignItems: 'center',
+              justifyContent: 'center',
+              textTransform: 'none',
               '&:hover': {
-                transform: 'translateY(-2px)',
-                transition: 'all 0.2s ease'
+                bgcolor: 'primary.dark'
               }
             }}
           >
-            <Box
-              sx={{
-                width: 60,
-                height: 60,
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255,255,255,0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                mb: 1
-              }}
-            >
-              <MicRounded sx={{ fontSize: 30 }} />
+            <Box sx={{
+              width: 64,
+              height: 64,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              bgcolor: 'rgba(255,255,255,0.2)',
+              borderRadius: '50%',
+              mb: 1
+            }}>
+              <i className="ri-mic-line" style={{ fontSize: '2rem' }} />
             </Box>
-            <Typography variant="h6" fontWeight="bold">
+            <Typography variant="subtitle1" fontWeight={500}>
               Tìm Kiếm
             </Typography>
-          </Card>
-        </Box>
-        
-        <Box flex={1}>
-          <Card 
+          </Button>
+          
+          <Button
+            variant="outlined"
+            fullWidth
             onClick={handleFamiliarSongs}
             sx={{
-              backgroundColor: 'white',
-              border: '2px solid #5865f2',
-              cursor: 'pointer',
-              borderRadius: 3,
-              minHeight: 140,
+              borderColor: 'primary.main',
+              borderWidth: 2,
+              color: 'primary.main',
+              py: 3,
+              borderRadius: 2,
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
               alignItems: 'center',
+              justifyContent: 'center',
+              textTransform: 'none',
               '&:hover': {
-                transform: 'translateY(-2px)',
-                transition: 'all 0.2s ease'
+                borderWidth: 2,
+                borderColor: 'primary.main',
+                bgcolor: 'primary.main',
+                color: 'white',
+                '& .icon-bg': {
+                  bgcolor: 'rgba(255,255,255,0.2)'
+                }
               }
             }}
           >
-            <Box
+            <Box 
+              className="icon-bg"
               sx={{
-                width: 60,
-                height: 60,
-                borderRadius: '50%',
-                backgroundColor: '#f0f0f8',
+                width: 64,
+                height: 64,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                mb: 1
+                bgcolor: 'rgba(79,70,229,0.1)',
+                borderRadius: '50%',
+                mb: 1,
+                transition: 'all 0.3s'
               }}
             >
-              <MusicNoteRounded sx={{ fontSize: 30, color: '#5865f2' }} />
+              <i className="ri-music-2-line" style={{ fontSize: '2rem' }} />
             </Box>
-            <Typography variant="h6" fontWeight="bold" color="#5865f2">
+            <Typography variant="subtitle1" fontWeight={500}>
               Quen Thuộc
             </Typography>
-          </Card>
+          </Button>
         </Box>
-      </Box>
 
-      {/* Recent Songs Section */}
-      <Box mb={4}>
-        <Typography variant="h5" fontWeight="bold" mb={2} color="#333">
-          Bài Gần Đây
-        </Typography>
-        
-        {loading ? (
-          <GuitarLoader message="Đang tải bài hát..." size="small" />
-        ) : (
-          <Box display="flex" gap={2}>
-            {recentSongs && recentSongs.length > 0 ? (
-              recentSongs.slice(0, 2).map((song, index) => (
-                <Box flex={1} key={song.id}>
-                  <Card 
-                    onClick={() => handleSongSelect(song.id)}
-                    sx={{
-                      cursor: 'pointer',
-                      borderRadius: 3,
-                      overflow: 'hidden',
-                      '&:hover': {
-                        transform: 'translateY(-2px)',
-                        transition: 'all 0.2s ease'
-                      }
-                    }}
-                  >
-                    <Box
+
+        {/* Recent Songs */}
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" sx={{ mb: 1.5, fontSize: '1.125rem', fontWeight: 600 }}>
+            Bài Gần Đây
+          </Typography>
+          
+          {loading ? (
+            <Box sx={{ p: 4, textAlign: 'center' }}>
+              <Typography variant="body2" color="text.secondary">
+                Đang tải...
+              </Typography>
+            </Box>
+          ) : (
+            <Box sx={{ 
+              overflowX: 'auto',
+              pb: 2,
+              '&::-webkit-scrollbar': { display: 'none' },
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none'
+            }}>
+              <Box sx={{ display: 'flex', gap: 1.5, width: 'max-content' }}>
+                {recentSongs && recentSongs.length > 0 ? (
+                  recentSongs.map((song, index) => (
+                    <Card
+                      key={song.id}
+                      onClick={() => handleSongSelect(song.id)}
                       sx={{
-                        height: 120,
-                        background: index === 0 
-                          ? 'linear-gradient(45deg, #8B4513 30%, #D2691E 90%)'
-                          : 'linear-gradient(45deg, #FF6B35 30%, #F7931E 90%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
+                        width: '10rem',
+                        flexShrink: 0,
+                        cursor: 'pointer',
+                        overflow: 'hidden',
+                        transition: 'all 0.2s',
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          boxShadow: 2
+                        }
                       }}
                     >
-                      <MusicNoteRounded sx={{ fontSize: 40, color: 'white' }} />
-                    </Box>
-                    <CardContent sx={{ py: 1.5 }}>
-                      <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 0.5 }}>
-                        {song.title}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        {song.artist?.name}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Box>
-              ))
-            ) : (
-              <Box width="100%">
-                <Typography variant="body2" color="text.secondary" textAlign="center" py={2}>
-                  Chưa có bài hát nào gần đây
-                </Typography>
+                      <Box sx={{ 
+                        height: '8rem',
+                        overflow: 'hidden',
+                        bgcolor: 'grey.100'
+                      }}>
+                        <img 
+                          src={`https://readdy.ai/api/search-image?query=acoustic%20guitar%20with%20sheet%20music%20in%20warm%20lighting%2C%20artistic%20composition%2C%20music%20theme%2C%20soft%20focus&width=160&height=128&seq=${index + 2}&orientation=landscape`}
+                          alt={song.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      </Box>
+                      <Box sx={{ p: 1.5 }}>
+                        <Typography 
+                          variant="subtitle1" 
+                          sx={{ 
+                            fontWeight: 500,
+                            fontSize: '0.875rem',
+                            mb: 0.5,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          {song.title}
+                        </Typography>
+                        <Typography 
+                          variant="body2" 
+                          color="text.secondary"
+                          sx={{
+                            fontSize: '0.75rem',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          {song.artist?.name}
+                        </Typography>
+                      </Box>
+                    </Card>
+                  ))
+                ) : (
+                  <Box sx={{ p: 4, textAlign: 'center', width: '100%' }}>
+                    <Typography variant="body2" color="text.secondary">
+                      Chưa có bài hát nào gần đây
+                    </Typography>
+                  </Box>
+                )}
               </Box>
-            )}
-          </Box>
-        )}
-      </Box>
+            </Box>
+          )}
+        </Box>
 
-      {/* Popular Chord Progressions */}
-      <Box>
-        <Typography variant="h5" fontWeight="bold" mb={2} color="#333">
-          Vòng Hợp Âm Phổ Biến
-        </Typography>
-        
-        <Box display="flex" flexWrap="wrap" gap={2}>
-          {chordProgressions.map((progression, index) => (
-            <Box flex="1 1 calc(50% - 8px)" key={progression.name}>
+        {/* Chord Progressions */}
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="h6" sx={{ mb: 1.5, fontSize: '1.125rem', fontWeight: 600 }}>
+            Vòng Hợp Âm Phổ Biến
+          </Typography>
+          
+          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
+            {chordProgressions.map((progression, index) => (
               <Card 
+                key={progression.name}
+                onClick={() => navigate(`/chord/${progression.name}`)}
                 sx={{
-                  borderRadius: 3,
-                  backgroundColor: index === 3 ? '#5865f2' : '#f8f9fa',
                   cursor: 'pointer',
+                  p: 1.5,
+                  transition: 'all 0.2s',
                   '&:hover': {
-                    transform: 'translateY(-2px)',
-                    transition: 'all 0.2s ease'
+                    transform: 'translateY(-1px)',
+                    boxShadow: 2
                   }
                 }}
               >
-                <CardContent sx={{ py: 2 }}>
-                  <Box display="flex" alignItems="center" mb={1}>
-                    <Box
-                      sx={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: '50%',
-                        backgroundColor: index === 3 ? 'rgba(255,255,255,0.2)' : '#e9ecef',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        mr: 1
-                      }}
-                    >
-                      <MusicNoteRounded 
-                        sx={{ 
-                          fontSize: 16, 
-                          color: index === 3 ? 'white' : '#5865f2' 
-                        }} 
-                      />
-                    </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{
+                    width: 40,
+                    height: 40,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    bgcolor: 'rgba(79,70,229,0.1)',
+                    borderRadius: 2,
+                    color: 'primary.main'
+                  }}>
+                    <i className="ri-music-2-line" style={{ fontSize: '1.25rem' }} />
+                  </Box>
+                  <Box sx={{ ml: 1.5 }}>
                     <Typography 
-                      variant="subtitle2" 
-                      fontWeight="bold"
-                      color={index === 3 ? 'white' : '#333'}
+                      variant="subtitle1" 
+                      sx={{ 
+                        fontWeight: 500,
+                        fontSize: '0.875rem',
+                        mb: 0.25
+                      }}
                     >
                       {progression.name}
                     </Typography>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ 
+                        fontSize: '0.75rem'
+                      }}
+                    >
+                      {progression.chords}
+                    </Typography>
                   </Box>
-                  <Typography 
-                    variant="caption" 
-                    color={index === 3 ? 'rgba(255,255,255,0.8)' : 'text.secondary'}
-                  >
-                    {progression.chords}
-                  </Typography>
-                </CardContent>
+                </Box>
               </Card>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       </Box>
-
-      {/* Floating Action Button */}
-      <IconButton
+      
+      {/* Floating Search Button */}
+      <Fab
+        color="primary"
+        onClick={handleVoiceSearch}
         sx={{
           position: 'fixed',
-          bottom: 24,
-          right: 24,
-          backgroundColor: '#5865f2',
-          color: 'white',
+          bottom: '1rem',
+          right: '1rem',
           width: 56,
           height: 56,
-          '&:hover': {
-            backgroundColor: '#4752c4'
-          }
+          boxShadow: 3
         }}
-        onClick={handleVoiceSearch}
       >
-        <MicRounded />
-      </IconButton>
+        <i className="ri-search-2-fill" style={{ fontSize: '1.5rem' }} />
+      </Fab>
     </Box>
   );
 };
