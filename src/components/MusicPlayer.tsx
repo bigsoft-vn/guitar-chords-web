@@ -149,12 +149,16 @@ const MusicPlayer: React.FC = () => {
           key={lineIndex}
           variant="h6"
           sx={{
-            py: 1,
-            backgroundColor: currentLine === lineIndex ? 'primary.light' : 'transparent',
-            color: currentLine === lineIndex ? 'white' : 'inherit',
-            borderRadius: 1,
+            py: 2,
             px: 2,
+            backgroundColor: currentLine === lineIndex ? 'grey.100' : 'transparent',
+            color: currentLine === lineIndex ? 'text.primary' : 'text.secondary',
+            borderRadius: 2,
             transition: 'all 0.3s ease',
+            fontSize: '1.125rem',
+            fontWeight: currentLine === lineIndex ? 600 : 400,
+            borderLeft: currentLine === lineIndex ? '4px solid' : '4px solid transparent',
+            borderColor: currentLine === lineIndex ? 'primary.main' : 'transparent',
           }}
         >
           {line}
@@ -179,19 +183,22 @@ const MusicPlayer: React.FC = () => {
             onClick={() => handleChordClick(chordPos.chord)}
             sx={{
               display: 'inline-block',
-              px: 1,
+              px: 1.5,
               py: 0.5,
               mx: 0.5,
-              bgcolor: 'rgba(79,70,229,0.1)',
-              color: 'primary.main',
-              borderRadius: 2,
+              bgcolor: 'grey.100',
+              color: 'text.primary',
+              borderRadius: 1,
               fontSize: '0.875rem',
-              fontWeight: 500,
+              fontWeight: 600,
               cursor: 'pointer',
-              transition: 'all 0.2s',
+              transition: 'all 0.2s ease',
+              border: '1px solid',
+              borderColor: 'grey.200',
               '&:hover': { 
-                bgcolor: 'primary.main',
-                color: 'white'
+                bgcolor: 'grey.200',
+                transform: 'translateY(-1px)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
               },
             }}
           >
@@ -210,19 +217,23 @@ const MusicPlayer: React.FC = () => {
       <Box
         key={lineIndex}
         sx={{
-          py: 1,
-          backgroundColor: currentLine === lineIndex ? 'primary.light' : 'transparent',
-          color: currentLine === lineIndex ? 'white' : 'inherit',
-          borderRadius: 1,
+          py: 2,
           px: 2,
+          backgroundColor: currentLine === lineIndex ? 'grey.100' : 'transparent',
+          color: currentLine === lineIndex ? 'text.primary' : 'text.secondary',
+          borderRadius: 2,
           transition: 'all 0.3s ease',
           display: 'flex',
           alignItems: 'center',
           flexWrap: 'wrap',
-          minHeight: '40px',
+          minHeight: '60px',
+          fontSize: '1.125rem',
+          fontWeight: currentLine === lineIndex ? 600 : 400,
+          borderLeft: currentLine === lineIndex ? '4px solid' : '4px solid transparent',
+          borderColor: currentLine === lineIndex ? 'primary.main' : 'transparent',
         }}
       >
-        <Typography variant="h6" component="span">
+        <Typography variant="h6" component="span" sx={{ fontSize: '1.125rem' }}>
           {parts}
         </Typography>
       </Box>
@@ -230,209 +241,123 @@ const MusicPlayer: React.FC = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'white', position: 'relative' }}>
-      {/* Nav Bar */}
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', position: 'relative' }}>
+      {/* Header */}
       <Box sx={{ 
-        position: 'fixed',
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        px: 2,
+        py: 2,
+        position: 'sticky',
         top: 0,
-        width: '100%',
-        bgcolor: 'white',
+        bgcolor: 'background.default',
+        zIndex: 10,
+        backdropFilter: 'blur(20px)',
         borderBottom: '1px solid',
-        borderColor: 'grey.100',
-        zIndex: 10
+        borderColor: 'divider'
       }}>
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'space-between',
-          px: 2,
-          py: 1.5
-        }}>
-          <IconButton 
-            onClick={() => navigate('/')}
-            sx={{ width: 32, height: 32 }}
-          >
-            <i className="ri-arrow-left-line" style={{ fontSize: '1.25rem' }} />
-          </IconButton>
-          <Typography variant="h6" sx={{ fontWeight: 500 }}>
+        <IconButton 
+          onClick={() => navigate('/')}
+          sx={{ width: 40, height: 40 }}
+        >
+          <i className="ri-arrow-left-line" style={{ fontSize: '1.5rem' }} />
+        </IconButton>
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.125rem' }}>
             {song.title}
           </Typography>
-          <IconButton sx={{ width: 32, height: 32 }}>
-            <i className="ri-more-2-line" style={{ fontSize: '1.25rem' }} />
-          </IconButton>
+          <Typography variant="body2" color="text.secondary">
+            {song.artist}
+          </Typography>
         </Box>
+        <IconButton sx={{ width: 40, height: 40 }}>
+          <i className="ri-more-fill" style={{ fontSize: '1.5rem' }} />
+        </IconButton>
       </Box>
       
-      {/* Song Content */}
-      <Box sx={{ pt: '4rem', px: 2, pb: '6rem' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Box>
-            <Typography variant="h6" sx={{ fontWeight: 500 }}>
-              {song.title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {song.artist}
-            </Typography>
-          </Box>
-        </Box>
-
-        {/* Floating Control Buttons */}
-        <Box sx={{ 
-          position: 'fixed',
-          right: '1rem',
-          top: '5rem',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1.5,
-          zIndex: 20
-        }}>
-          <Fab
-            size="small"
-            sx={{ 
-              bgcolor: 'white',
-              boxShadow: 3,
-              '&:hover': { bgcolor: 'grey.50' }
-            }}
-            onClick={() => setShowSpeedDialog(true)}
-          >
-            <i className="ri-speed-line" style={{ fontSize: '1.25rem', color: '#4F46E5' }} />
-          </Fab>
-          <Fab
-            size="small"
-            sx={{ 
-              bgcolor: 'white',
-              boxShadow: 3,
-              '&:hover': { bgcolor: 'grey.50' }
-            }}
-          >
-            <i className="ri-contrast-2-line" style={{ fontSize: '1.25rem', color: '#4F46E5' }} />
-          </Fab>
-          <Fab
-            size="small"
-            sx={{ 
-              bgcolor: 'white',
-              boxShadow: 3,
-              '&:hover': { bgcolor: 'grey.50' }
-            }}
-          >
-            <i className="ri-metronome-line" style={{ fontSize: '1.25rem', color: '#4F46E5' }} />
-          </Fab>
-          <Fab
-            size="small"
-            sx={{ 
-              bgcolor: 'white',
-              boxShadow: 3,
-              '&:hover': { bgcolor: 'grey.50' }
-            }}
-          >
-            <i className="ri-heart-line" style={{ fontSize: '1.25rem', color: '#4F46E5' }} />
-          </Fab>
-          <Fab
-            size="small"
-            sx={{ 
-              bgcolor: 'white',
-              boxShadow: 3,
-              '&:hover': { bgcolor: 'grey.50' }
-            }}
-          >
-            <i className="ri-share-line" style={{ fontSize: '1.25rem', color: '#4F46E5' }} />
-          </Fab>
-        </Box>
-
-        <Card sx={{ border: '1px solid', borderColor: 'grey.100', borderRadius: 2, p: 2, mb: 4 }}>
+      {/* Lyrics Card */}
+      <Box sx={{ px: 2, pb: '8rem' }}>
+        <Card sx={{ mt: 2, overflow: 'hidden' }}>
           <Box
             ref={scrollContainerRef}
             sx={{
-              maxHeight: '60vh',
+              maxHeight: '70vh',
               overflow: 'auto',
-              fontSize: '1rem',
-              lineHeight: 1.8
+              p: 0
             }}
           >
             {lyricsLines.map((line, index) => renderLineWithChords(line, index))}
           </Box>
         </Card>
 
-      </Box>
-      
-      {/* Next Song Preview */}
-      <Box sx={{ 
-        position: 'fixed',
-        bottom: '3.5rem',
-        left: 0,
-        width: '100%',
-        bgcolor: 'white',
-        borderTop: '1px solid',
-        borderColor: 'grey.200',
-        px: 2,
-        py: 1.5,
-        zIndex: 10
-      }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', flex: 1 }}>
-            <Box sx={{ 
-              width: 40, 
-              height: 40,
-              bgcolor: 'grey.100',
-              borderRadius: 2,
-              overflow: 'hidden',
-              mr: 1.5
-            }}>
-              <img 
-                src="https://readdy.ai/api/search-image?query=acoustic%20guitar%20with%20sheet%20music%2C%20warm%20lighting%2C%20music%20theme&width=40&height=40&seq=9&orientation=squarish"
-                alt="Next song"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            </Box>
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
-                Chạy Ngay Đi
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem' }}>
-                Sơn Tùng M-TP
-              </Typography>
-            </Box>
-          </Box>
-          <IconButton sx={{ width: 32, height: 32 }}>
-            <i className="ri-skip-forward-line" style={{ fontSize: '1.25rem', color: '#6B7280' }} />
+        {/* Control Buttons */}
+        <Box sx={{ 
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 2,
+          mt: 3
+        }}>
+          <IconButton
+            onClick={() => setShowSpeedDialog(true)}
+            sx={{ width: 48, height: 48 }}
+          >
+            <i className="ri-speed-line" style={{ fontSize: '1.5rem' }} />
+          </IconButton>
+          <IconButton
+            onClick={togglePlayPause}
+            sx={{ 
+              width: 60, 
+              height: 60,
+              bgcolor: isPlaying ? 'grey.200' : 'primary.main',
+              color: isPlaying ? 'text.primary' : 'white',
+              '&:hover': {
+                bgcolor: isPlaying ? 'grey.300' : 'primary.dark'
+              }
+            }}
+          >
+            <i className={isPlaying ? "ri-pause-fill" : "ri-play-fill"} style={{ fontSize: '2rem' }} />
+          </IconButton>
+          <IconButton sx={{ width: 48, height: 48 }}>
+            <i className="ri-heart-line" style={{ fontSize: '1.5rem' }} />
           </IconButton>
         </Box>
       </Box>
       
-      {/* Auto-scroll Control */}
+      {/* Bottom Controls */}
       <Box sx={{ 
         position: 'fixed',
         bottom: 0,
         left: 0,
-        width: '100%',
-        bgcolor: 'white',
+        right: 0,
+        bgcolor: 'background.paper',
         borderTop: '1px solid',
-        borderColor: 'grey.200',
-        px: 2,
-        py: 1,
-        zIndex: 10
+        borderColor: 'divider',
+        p: 2,
+        backdropFilter: 'blur(20px)',
+        zIndex: 20
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
           <IconButton 
             onClick={() => setCurrentLine(Math.max(0, currentLine - 1))}
-            sx={{ width: 32, height: 32 }}
+            sx={{ width: 40, height: 40 }}
           >
-            <i className="ri-skip-back-line" style={{ fontSize: '1.25rem', color: '#6B7280' }} />
+            <i className="ri-skip-back-line" style={{ fontSize: '1.25rem' }} />
           </IconButton>
-          <Box sx={{ flex: 1, mx: 2 }}>
+          <Box sx={{ flex: 1 }}>
             <Slider
-              value={(currentLine / (lyricsLines.length - 1)) * 100}
-              onChange={(_, value) => setCurrentLine(Math.round(((value as number) / 100) * (lyricsLines.length - 1)))}
+              value={(currentLine / Math.max(lyricsLines.length - 1, 1)) * 100}
+              onChange={(_, value) => setCurrentLine(Math.round(((value as number) / 100) * Math.max(lyricsLines.length - 1, 1)))}
               min={0}
               max={100}
               sx={{
-                height: 8,
+                height: 6,
                 '& .MuiSlider-thumb': {
                   width: 16,
                   height: 16
                 },
                 '& .MuiSlider-track': {
-                  bgcolor: 'primary.main'
+                  bgcolor: 'text.primary'
                 },
                 '& .MuiSlider-rail': {
                   bgcolor: 'grey.200'
@@ -442,10 +367,20 @@ const MusicPlayer: React.FC = () => {
           </Box>
           <IconButton 
             onClick={() => setCurrentLine(Math.min(lyricsLines.length - 1, currentLine + 1))}
-            sx={{ width: 32, height: 32 }}
+            sx={{ width: 40, height: 40 }}
           >
-            <i className="ri-skip-forward-line" style={{ fontSize: '1.25rem', color: '#6B7280' }} />
+            <i className="ri-skip-forward-line" style={{ fontSize: '1.25rem' }} />
           </IconButton>
+        </Box>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+          <Typography variant="body2" color="text.secondary">
+            {currentLine + 1} / {lyricsLines.length}
+          </Typography>
+          <Box sx={{ width: 4, height: 4, bgcolor: 'text.secondary', borderRadius: '50%' }} />
+          <Typography variant="body2" color="text.secondary">
+            {Math.round(scrollSpeed * 100)}% tốc độ
+          </Typography>
         </Box>
       </Box>
 
@@ -462,27 +397,25 @@ const MusicPlayer: React.FC = () => {
             margin: 0,
             maxWidth: 'none',
             maxHeight: '70vh',
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0
+            borderRadius: '20px 20px 0 0',
+            bgcolor: 'background.paper'
           }
         }}
       >
-        <DialogContent sx={{ p: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <DialogContent sx={{ p: 3 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               Hợp Âm {selectedChord}
             </Typography>
             <IconButton 
               onClick={() => setShowChordDialog(false)}
-              sx={{ width: 32, height: 32 }}
+              sx={{ width: 40, height: 40 }}
             >
               <i className="ri-close-line" style={{ fontSize: '1.25rem' }} />
             </IconButton>
           </Box>
           <Box sx={{ textAlign: 'center', py: 2 }}>
-            <Typography variant="body1" sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ mb: 3, color: 'text.secondary' }}>
               Bấm vào để xem chi tiết cách bấm hợp âm {selectedChord}
             </Typography>
             <Button
@@ -494,13 +427,13 @@ const MusicPlayer: React.FC = () => {
               }}
               sx={{
                 py: 1.5,
-                borderRadius: 2,
                 textTransform: 'none',
-                fontWeight: 500
+                fontWeight: 500,
+                fontSize: '1rem'
               }}
               startIcon={<i className="ri-volume-up-line" style={{ fontSize: '1.25rem' }} />}
             >
-              Nghe Âm Thanh
+              Xem Chi Tiết
             </Button>
           </Box>
         </DialogContent>
@@ -519,27 +452,28 @@ const MusicPlayer: React.FC = () => {
             margin: 0,
             maxWidth: 'none',
             maxHeight: '50vh',
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0
+            borderRadius: '20px 20px 0 0',
+            bgcolor: 'background.paper'
           }
         }}
       >
-        <DialogContent sx={{ p: 2 }}>
+        <DialogContent sx={{ p: 3 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               Tốc Độ Phát
             </Typography>
             <IconButton 
               onClick={() => setShowSpeedDialog(false)}
-              sx={{ width: 32, height: 32 }}
+              sx={{ width: 40, height: 40 }}
             >
               <i className="ri-close-line" style={{ fontSize: '1.25rem' }} />
             </IconButton>
           </Box>
           
           <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ mb: 2, textAlign: 'center', fontWeight: 600 }}>
+              {Math.round(scrollSpeed * 100)}%
+            </Typography>
             <Slider
               value={scrollSpeed}
               onChange={(_, value) => setScrollSpeed(value as number)}
@@ -553,13 +487,17 @@ const MusicPlayer: React.FC = () => {
                   height: 20
                 },
                 '& .MuiSlider-track': {
-                  bgcolor: 'primary.main'
+                  bgcolor: 'text.primary'
                 },
                 '& .MuiSlider-rail': {
                   bgcolor: 'grey.200'
                 }
               }}
             />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
+              <Typography variant="body2" color="text.secondary">Chậm</Typography>
+              <Typography variant="body2" color="text.secondary">Nhanh</Typography>
+            </Box>
           </Box>
         </DialogContent>
       </Dialog>
